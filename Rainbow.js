@@ -158,16 +158,14 @@ Rainbow.prototype.updatePath = function() {
 		// console.log(this.pp[0]);
     for (var i = 7; i < 13; i++) {
       this.offs = this.pt.w * ((i - 7) - 3);
-      //fill(rbcol[(this.colOffs + (i - 7)) % 6]);
-			fill(255);
+      fill(rbcol[(this.colOffs + (i - 7)) % 6]);
 			push();
       translate(this.pp[i].x, this.pp[i].y);
-			ellipse(0, 0, 16, 16);
-      // beginShape();
-      // vertex(this.pt.p.x + this.pt.tan.x * this.offs, this.pt.p.y + this.pt.tan.y * this.offs);
-      // vertex(this.pt.p.x + this.pt.tan.x * (this.offs + this.pt.w), this.pt.p.y + this.pt.tan.y * (this.offs + this.pt.w));
-      // vertex(this.pp[i + 1].x, this.pp[i + 1].y);
-      // endShape();
+			beginShape();
+      vertex(this.pt.p.x + this.pt.tan.x * this.offs, this.pt.p.y + this.pt.tan.y * this.offs);
+      vertex(this.pt.p.x + this.pt.tan.x * (this.offs + this.pt.w), this.pt.p.y + this.pt.tan.y * (this.offs + this.pt.w));
+      vertex(this.pp[i + 1].x, this.pp[i + 1].y);
+      endShape();
       pop();
     }
   }
