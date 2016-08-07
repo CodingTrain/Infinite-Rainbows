@@ -4,7 +4,7 @@ This code is adapted from Rainbows, a commissioned piece, originally created by 
 
 It was also included in [MOMA's 2011 "Talk to Me" Exhibition](http://moma.org/interactives/exhibitions/2011/talktome/objects/146216/). Further documentation [can be found here on flickr](https://www.flickr.com/photos/watz/6283617649).
 
-Here is the full project description and credits [as listed on moma.org]((http://moma.org/interactives/exhibitions/2011/talktome/objects/146216/).
+Here is the full project description and credits [as listed on moma.org](http://moma.org/interactives/exhibitions/2011/talktome/objects/146216/).
 
 > ### Good Things Should Never End
 
