@@ -1,15 +1,19 @@
-// This code is adapted from Rainbows, a commissioned piece,
-// originally created by Marius Watz for POKE as part of an
-// online brand experience for Orange UK.
+// Infinite Rainbows
+// This code is adapted from Infinite Rainbows,
+// a generative animation by [Marius Watz](http://mariuswatz.com/).
+// The original Actionscript version was commissioned by
+// [POKE](http://pokelondon.com) as part of Good Things Should Never End,
+// an online brand experience for Orange UK.
 
-// It was also included in MOMA's 2011 "Talk to Me" Exhibition
-// https://www.flickr.com/photos/watz/6283617649
-// http://moma.org/interactives/exhibitions/2011/talktome/objects/146216/
+// Marius Watz and Poke have generously given permission
+// for this p5.js port started by Daniel Shiffman for use
+// on the YouTube channel "Coding Rainbow."
 
-// original author Patrick Mineault @ www.5etdemi.com
-// modified by Andrew Knott @ PokeLondon.com
+// This work is licensed under a Creative Commons
+// Attribution-NonCommercial 4.0 International License
+// http://creativecommons.org/licenses/by-nc/4.0/).
 
-// Ported to p5.js by Daniel Shiffman
+// Still in progress!
 
 
 function drawBeziers(mc, intPoints) {

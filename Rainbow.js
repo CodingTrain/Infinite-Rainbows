@@ -1,3 +1,20 @@
+// Infinite Rainbows
+// This code is adapted from Infinite Rainbows,
+// a generative animation by [Marius Watz](http://mariuswatz.com/).
+// The original Actionscript version was commissioned by
+// [POKE](http://pokelondon.com) as part of Good Things Should Never End,
+// an online brand experience for Orange UK.
+
+// Marius Watz and Poke have generously given permission
+// for this p5.js port started by Daniel Shiffman for use
+// on the YouTube channel "Coding Rainbow."
+
+// This work is licensed under a Creative Commons
+// Attribution-NonCommercial 4.0 International License
+// http://creativecommons.org/licenses/by-nc/4.0/).
+
+// Still in progress!
+
 // import com.bourre.log.*;
 // import orange.lib.*;
 //
