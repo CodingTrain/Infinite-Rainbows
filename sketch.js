@@ -15,6 +15,17 @@
 
 // Still in progress!
 
+/*
+// TODO - MW
+
+- Initialize to full page
+- Fix "isAvoiding" behavior or reinitialize off-screen rainbows
+- Better demo behaviors (rainbows die / born, differentiated behaviors,
+ GUI parameter manipulation?)
+- Try drawing stored geometry instead of not clearing background
+
+*/
+
 var rndSeed = -1;
 var MITER = "miter";
 var ROUND = "round";
@@ -35,14 +46,14 @@ var tmpbez = [];
 var strokeMiter, strokeScale, strokeCaps, strokeW, strokeC;
 var width, height;
 
-var rbcol;
+var rbcol=[];
 
 var rainbows = [];
 
 var rbCnt = 0;
 
 function setup() {
-	createCanvas(800, 600);
+	createCanvas(1200, 800);
   col = new ColorPalette();
   strokeMiter = ROUND;
   strokeScale = NORMAL;
@@ -50,21 +61,37 @@ function setup() {
   strokeW = 1;
   strokeC = 0;
 	initLUT();
-	var r = new Rainbow();
-	r.init();
-	r.start();
-	r.initPath();
-	rainbows.push(r);
+
+  initRainbows();
+
+}
+
+function initRainbows() {
+  var n=random(3,15);
+
+  background(255);
+  rainbows=[];
+  while(rainbows.length<n) {
+    var r = new Rainbow();
+    r.init();
+    r.start();
+    r.initPath();
+    rainbows.push(r);
+  }
 }
 
 function draw() {
-	background(0);
-	translate(width/2, height/2);
+	if(frameCount<5) background(255);
+	// translate(width/2, height/2);
+  noStroke();
 	for (var i = 0; i < rainbows.length; i++) {
 		rainbows[i].update();
 	}
 }
 
+function mousePressed() {
+  initRainbows();
+}
 
 function initLUT() {
   SINCOS_PRECISION = 0.1;
@@ -79,22 +106,28 @@ function initLUT() {
     //			out(" "+i+" "+sinLUT[i]+","+cosLUT[i]);
   }
 
-  if (!rbcol) {
+  if (!rbcol.length<6) {
     rbcol = [];
-    rbcol[0] = 0xfd000b;
-    rbcol[1] = 0xff6915;
-    rbcol[2] = 0xfeed01;
-    rbcol[3] = 0x5fc42a;
-    rbcol[4] = 0x007ed3;
-    rbcol[5] = 0x530268;
+    rbcol[0] = "#fd000b";
+    rbcol[1] = "#ff6915";
+    rbcol[2] = "#feed01";
+    rbcol[3] = "#5fc42a";
+    rbcol[4] = "#007ed3";
+    rbcol[5] = "#530268";
 
     // updated
-    rbcol[0] = 0xff4316;
-    rbcol[1] = 0xff7900;
-    rbcol[2] = 0xffde00;
-    rbcol[3] = 0x16cc93;
-    rbcol[4] = 0x158acd;
-    rbcol[5] = 0xaf61db;
+  // rbcol[0] = "#ff4316";
+  // rbcol[1] = "#ff7900";
+  // rbcol[2] = "#ffde00";
+  // rbcol[3] = "#16cc93";
+  // rbcol[4] = "#158acd";
+  // rbcol[5] = "#af61db";
+    // rbcol[0] = 0xffff4316;
+    // rbcol[1] = 0xffff7900;
+    // rbcol[2] = 0xffffde00;
+    // rbcol[3] = 0xff16cc93;
+    // rbcol[4] = 0xff158acd;
+    // rbcol[5] = 0xffaf61db;
   }
 }
 
@@ -155,7 +188,7 @@ function rndProb(prob) {
   return val > prob;
 }
 
-function rndI(min, max) {
+p5.prototype.rndI = function(min, max) {
   var val;
   rndSeed = (rndSeed * 16807) % 2147483647;
   val = (rndSeed / 2147483647);

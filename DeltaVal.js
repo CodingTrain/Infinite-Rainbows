@@ -32,6 +32,9 @@ DeltaVal.prototype.setTo = function(_val, _min, _max, _maxD, _maxDiff) {
   this.maxD = _maxD;
   this.maxDiff = _maxDiff;
   this.D = Math.random() * this.maxD - this.maxD / 2;
+
+  this.nudgeCnt=0;
+  
 }
 
 DeltaVal.prototype.nudge = function(_nudgeDir) {
@@ -60,7 +63,7 @@ DeltaVal.prototype.update = function() {
 }
 
 DeltaVal.prototype.reverseDir = function() {
-  trace("reverseDir " + D);
+  println("reverseDir " + D);
   D += -D * 0.2;
 }
 
