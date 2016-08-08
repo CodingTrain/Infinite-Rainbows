@@ -41,7 +41,7 @@ function Rainbow(id) {
   this.isRunning = false;
   this._id = id;
   this.pt = new Position(id);
-  this.minDist = 20;
+  this.minDist = 0.1; //20
   this.setWidth(1, 15);
 }
 
@@ -51,16 +51,29 @@ Rainbow.prototype.init = function() {
   // pmcTop.clear();
   this.pmcIndex = 0;
 
-  this.colOffs = 0; //rndI(6);
+  this.colOffs = floor(random(6));
 
-  this.pt.reinit(0, 0, 2, 4.5, 2);
-  this.pt.p.set(width / 2, 0);
-  this.pt.p.add(rndF(-200, 200), rndF(-100, 100));
-  if (this.pt.p.x > width / 2) this.pt.dir += 180;
+  // this.pt.reinit(0, 0, 2, 4.5, 2);
 
   //original
-  //		dirD.setTo(0,2.5,-2.5,0.05,0.0025);
-  //		speedD.setTo(minSpeed,maxSpeed,minSpeed,0.02,0.002);
+  // this.dirD.setTo(0,2.5,-2.5,0.05,0.0025);
+  // this.speedD.setTo(minSpeed,maxSpeed,minSpeed,0.02,0.002);
+
+  var rndMod=random(1,9)*0.125;
+  this.pt.reinit(0, 0, 
+    2*rndMod, 4.5*rndMod, // min/max speed
+    0.1*rndMod // max rotation
+    );
+
+  var vec=createVector(random(0.1,0.4)*height*0.5,0);
+  vec.rotate(random(TWO_PI));
+  vec.add(width/2,height/2);
+
+  // this.pt.p.set(width / 2, height/2);
+  // this.pt.p.add(rndF(-200, 200), rndF(-100, 100));
+  this.pt.p.set(vec.x,vec.y);
+  if (this.pt.p.x > width / 2) this.pt.dir += 180;
+
 
   this.cnt = 0;
 }
@@ -74,6 +87,7 @@ Rainbow.prototype.update = function() {
 }
 
 Rainbow.prototype.start = function() {
+  println("start()");
   //Logger.LOG(this.mc + " start", LogLevel.DEBUG, channel);
   this.isRunning = true;
   this.cnt = 0;
@@ -113,6 +127,9 @@ Rainbow.prototype.setMinDistance = function(min) {
 Rainbow.prototype.updatePath = function() {
   var neww;
 
+  if(frameCount<100) println(this.cnt+" a u "+this.pt.p.x+","+this.pt.p.y+
+    " |" +this.pt.isAvoiding+" dist="+nf(this.pt.distTravelled,0,2)+" > "+
+      nf(this.pt.speed.val,0,2)+" "+nf(this.pt.dir,0,2)+" "+nf(this.pt.dirD.val,0,2));
   //		trace("a u "+pt.p.x+","+pt.p.y);
 
   // check to see if we should place new segment
@@ -131,19 +148,15 @@ Rainbow.prototype.updatePath = function() {
     this.pt.updateOldPoint();
 
     if (this.cnt > 2) { // Distance has been covered, add new point
-      //this.pmcIndex = (this.pmcIndex + 1) % this.pmcNum;
-      //var thisClip = pmc[pmcIndex];
-      //thisClip.clear();
-      //pmcTop.clear();
-      //				thisClip.swapDepths(pmc[(pmcIndex+1)%pmcNum]);
       for (var i = 0; i < 6; i++) {
-        fill(rbcol[(colOffs + i) % 6]);
+        stroke(rbcol[(this.colOffs + i) % 6]);
+        fill(rbcol[(this.colOffs + i) % 6]);
         push();
-        translate(pp[i].x, pp[i].y);
         beginShape();
-        vertex(pp[i + 7].x, pp[i + 7].y);
-        vertex(pp[i + 8].x, pp[i + 8].y);
-        vertex(pp[i + 1].x, pp[i + 1].y);
+        vertex(this.pp[i].x, this.pp[i].y);
+        vertex(this.pp[i + 7].x, this.pp[i + 7].y);
+        vertex(this.pp[i + 8].x, this.pp[i + 8].y);
+        vertex(this.pp[i + 1].x, this.pp[i + 1].y);
         endShape();
         pop();
       }
@@ -154,14 +167,17 @@ Rainbow.prototype.updatePath = function() {
   }
   // if not new segment, draw temporary path
   else if (this.cnt > 2) {
-    //pmcTop.clear();
-		// console.log(this.pp[0]);
     for (var i = 7; i < 13; i++) {
       this.offs = this.pt.w * ((i - 7) - 3);
+
+      // stroke is used to cover aliasing white "gap" glitches when rendering polygons
+      stroke(rbcol[(this.colOffs + (i - 7)) % 6]);
+
       fill(rbcol[(this.colOffs + (i - 7)) % 6]);
+
 			push();
-      translate(this.pp[i].x, this.pp[i].y);
 			beginShape();
+      vertex(this.pp[i].x, this.pp[i].y);
       vertex(this.pt.p.x + this.pt.tan.x * this.offs, this.pt.p.y + this.pt.tan.y * this.offs);
       vertex(this.pt.p.x + this.pt.tan.x * (this.offs + this.pt.w), this.pt.p.y + this.pt.tan.y * (this.offs + this.pt.w));
       vertex(this.pp[i + 1].x, this.pp[i + 1].y);

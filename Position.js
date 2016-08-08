@@ -48,6 +48,8 @@ function Position(id) {
   this.speed = new DeltaVal();
   this.dirD = new DeltaVal();
 
+  this.w = 0;
+  this.wD = 0;
   this.wMax = 10;
   this.wMin = 1;
 }
@@ -74,7 +76,7 @@ Position.prototype.reinit = function(px, py, minspeed, maxspeed, maxrot) {
   //trace("a Pos reinit");
   this.p.set(px, py);
 
-  this.dir = rndF(360);
+  this.dir = random(360);
   this.isAvoiding = false;
 
   this.setSpeed(minspeed, maxspeed);
@@ -105,17 +107,17 @@ Position.prototype.update = function() {
   this.speed.update();
 
   // if not already avoiding, check edge
-  if (!this.isAvoiding) {
-    if ((this.p.x + this.dirV.x < 0) ||
-      (this.p.x + this.dirV.x > 970) ||
-      (this.p.y + this.dirV.y > maxY) ||
-      (this.p.y + this.dirV.y < minY)) {
-      this.goalX = width / 2 + rndF(-200, 100);
-      this.goalY = (this.minY + this.maxY) / 2 + rndF(-200, 100);
-      this.isAvoiding = true;
-      this.avoidSpeed = 0;
-    }
-  }
+  // if (!this.isAvoiding) {
+  //   if ((this.p.x + this.dirV.x < 0) ||
+  //     (this.p.x + this.dirV.x > width) ||
+  //     (this.p.y + this.dirV.y > this.maxY) ||
+  //     (this.p.y + this.dirV.y < this.minY)) {
+  //     this.goalX = width / 2 + rndF(-200, 100);
+  //     this.goalY = (this.minY + this.maxY) / 2 + rndF(-200, 100);
+  //     this.isAvoiding = true;
+  //     this.avoidSpeed = 0;
+  //   }
+  // }
 
   // if avoiding, calculate goal direction and move towards it
   if (this.isAvoiding) {
@@ -144,7 +146,7 @@ Position.prototype.update = function() {
   if (this.dir > 360) this.dir -= 360;
   else if (this.dir < 0) this.dir = this.dir + 360;
 
-  this.dirV.set(COS(this.dir), SIN(this.dir));
+  this.dirV.set(cos(this.dir), sin(this.dir));
   this.p.add(this.dirV.x * this.speed.val, this.dirV.y * this.speed.val);
   this.tan.setToTangent(this.pOld, this.p);
   this.dirV.mult(200);
@@ -159,7 +161,7 @@ Position.prototype.update = function() {
 
   if (this.birthCnt > 0) {
     this.dieT += this.dieD;
-    this.wD = (this.neww - this.w) * 0.05 * this.dieT;
+    this.wD = (neww - this.w) * 0.05 * this.dieT;
     this.birthCnt--;
   } else if (this.dieCnt > 0) {
     this.dieT += this.dieD;
@@ -172,7 +174,7 @@ Position.prototype.update = function() {
     }
     //			trace("a "+dieCnt+" - "+w+" "+wD);
   } else {
-    this.wD = (this.neww - this.w) * 0.05;
+    this.wD = (neww - this.w) * 0.015;
   }
   this.w += this.wD;
   if (this.w < 0.1) this.w = 0.1;
